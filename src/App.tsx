@@ -6,7 +6,7 @@ import NewGameDifficulty from './pages/NewGameDifficulty';
 import GameConfirm from './pages/GameConfirm';
 import GameChoosePlayer from './pages/GameChoosePlayer';
 import GameChooseDifficulty from './pages/GameChooseDifficulty';
-
+import StartingInformation from './pages/StartingInformation';
 
 function App() {
   return (
@@ -26,8 +26,11 @@ function App() {
       <Route path='/hra/:gameId/vyberHrace' exact>
         <GameChoosePlayer />
       </Route>
-      <Route path='/hra/:gameId/:season/obtiznost'>
+      <Route path='/hra/:gameId/:season/obtiznost' exact>
         <GameChooseDifficulty />
+      </Route>
+      <Route path='/hra/:gameId/:season/:facts'>
+        <StartingInformation />
       </Route>
       <Route path='*'>
         <NotFound />

@@ -5,7 +5,6 @@ import Content from "../components/Content/Content";
 import FullImage from "../components/FullImage/FullImage";
 import { SeasonNames } from "../Seasons";
 
-
 function GameChooseDifficulty() {
   const params: {gameId: string, season: string} = useParams();
   const link = `/game/${params.gameId}/${params.season}/`
@@ -22,6 +21,16 @@ function GameChooseDifficulty() {
       <Link to={link+'8'}>
         <Button fullWidth>
           Začátečník (8 faktů)
+        </Button>
+      </Link>
+      <Link to={link+'4'}>
+        <Button fullWidth>
+          Zkušený/á (4 faktů)
+        </Button>
+      </Link>
+      <Link to={link+'0'}>
+        <Button fullWidth>
+          Génius (0 faktů)
         </Button>
       </Link>
     </Content>
