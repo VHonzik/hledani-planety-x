@@ -1,0 +1,11 @@
+.fullWidth {
+  width: 100%;
+}
+
+.button {
+  display: flex;
+  padding: 6px 10px;
+  margin-bottom: 10px;
+  align-items: center;
+  justify-content: center;
+}

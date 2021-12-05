@@ -1,0 +1,5 @@
+.inlineImage {
+  height: 2em;
+  filter: invert(1);
+  margin: 0 1em;
+}
