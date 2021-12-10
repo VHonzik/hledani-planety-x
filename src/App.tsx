@@ -20,7 +20,7 @@ function App() {
       <Route path='/novahra/obtiznost' exact>
         <NewGameDifficulty />
       </Route>
-      <Route path='/hra/:gameId/potrvrdit' exact>
+      <Route path='/novahra/:mode/potrvrdit' exact>
         <GameConfirm />
       </Route>
       <Route path='/hra/:gameId/vyberHrace' exact>
@@ -29,7 +29,7 @@ function App() {
       <Route path='/hra/:gameId/:season/obtiznost' exact>
         <GameChooseDifficulty />
       </Route>
-      <Route path='/hra/:gameId/:season/:facts'>
+      <Route path='/hra/:gameId/:season/:facts/zacatecniFakta' exact>
         <StartingInformation />
       </Route>
       <Route path='*'>

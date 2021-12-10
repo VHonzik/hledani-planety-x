@@ -3,13 +3,17 @@ import Button from "../components/Button/Button";
 import Content from "../components/Content/Content";
 
 function NewGameDifficulty() {
+  const standardLink = '/novahra/standard/potrvrdit';
+  const expertLink = '/novahra/expert/potrvrdit';
   return (
     <Content>
       <h1>Obtížnost</h1>
-      <Link to='/hra/g3x6/potrvrdit'>
+      <Link to={standardLink}>
         <Button fullWidth>Standart</Button>
       </Link>
-      <Button fullWidth disabled>Expert</Button>
+      <Link to={expertLink}>
+        <Button fullWidth disabled>Expert</Button>
+      </Link>
     </Content>
   );
 }

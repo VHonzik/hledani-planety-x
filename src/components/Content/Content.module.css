@@ -4,3 +4,9 @@
   width: 50%;
   margin: auto;
 }
+
+@media all and (min-width:1024px) {
+  .content {
+    height: 90vh;
+  }
+}
