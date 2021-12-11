@@ -8,6 +8,8 @@ import GameChoosePlayer from './pages/GameChoosePlayer';
 import GameChooseDifficulty from './pages/GameChooseDifficulty';
 import StartingInformation from './pages/StartingInformation';
 import ExistingGame from './pages/ExistingGame';
+import ResearchConferences from './pages/ResearchConferences';
+import GameMenu from './pages/GameMenu';
 
 function App() {
   return (
@@ -35,6 +37,12 @@ function App() {
       </Route>
       <Route path='/hra/:gameId/:season/:facts/zacatecniFakta' exact>
         <StartingInformation />
+      </Route>
+      <Route path='/hra/:gameId/vyzkumKonference' exact>
+        <ResearchConferences />
+      </Route>
+      <Route path='/hra/:gameId/herniMenu' exact>
+        <GameMenu />
       </Route>
       <Route path='*'>
         <NotFound />

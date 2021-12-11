@@ -17,7 +17,7 @@ function GameChoosePlayer(props: {gameId: string}) {
     buttons.push(
       <Link to={link+season+linkAffix} key={seasonKey}>
         <Button fullWidth>
-          <SeasonIcon inline season={season} />{SeasonNames[season]}
+          <SeasonIcon iconStyle='inline' season={season} />{SeasonNames[season]}
         </Button>
       </Link>
     )
@@ -26,7 +26,7 @@ function GameChoosePlayer(props: {gameId: string}) {
   return (
     <Content>
       <h1>Výběr strany</h1>
-      <p>Vyber stranu na kterou koukáš a napiš si ji na sešit:</p>
+      <p>Vyber stranu na kterou koukáš a napiš si ji na papír:</p>
       {buttons}
     </Content>
   )

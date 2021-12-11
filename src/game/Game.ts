@@ -61,6 +61,15 @@ export const SkyObjectNamesAccusative: Record<SkyObject, string> = {
   [SkyObject.PlanetX]: "Planetu X",
 }
 
+export const SkyObjectNamesPluralNominative: Record<SkyObject, string> = {
+  [SkyObject.Asteroid]: "Asteroidy",
+  [SkyObject.DwarfPlanet]: "Trpasličí planety",
+  [SkyObject.Comet]: "Komety",
+  [SkyObject.GasCloud]: "Plynové mračna",
+  [SkyObject.TrulyEmpty]: "Prázné Sektory",
+  [SkyObject.PlanetX]: "Planeta X",
+}
+
 export enum Seasons {
   Spring = 'jaro',
   Summer = 'leto',
@@ -104,10 +113,53 @@ export type StartingInfoEntry = {
   object: SkyObject
 }
 
+export enum Research {
+  A = 'A',
+  B = 'B',
+  C = 'C',
+  D = 'D',
+  E = 'E',
+  F = 'F',
+}
+
+enum Conference {
+  X1 = 'X1',
+  X2 = 'X2'
+}
+
+enum ResearchRules {
+  OneOrMoreXAdjacentY = 'confClue1PlusXAdjacentY',
+  NoXOppositeY = 'confClueNoXOppositeY',
+  NoXWithin1Y = 'confClueNoXWithin1Y',
+  AllXWithinNY = 'confClueAllXWithinNY',
+  NoXWithinNY = 'confClueNoXWithinNY',
+  PlanetXNotOppositeY = 'confClue9NotOppositeY',
+}
+
+export function reverseResearchRule(researchRuleValueString: string): ResearchRules | undefined {
+  for (let researchRuleKey in ResearchRules) {
+    const researchRule = ResearchRules[researchRuleKey as keyof typeof ResearchRules];
+    if (researchRule === researchRuleValueString) {
+      return researchRule;
+    }
+  }
+  return undefined;
+}
+
+export type ResearchData = {
+  objects: SkyObject[],
+  objectX: SkyObject,
+  objectY?: SkyObject,
+  countN?: number,
+  rule: ResearchRules,
+}
+
 class GameInstance {
   gameCode: string = '';
   skyObjects: Array<SkyObject> = []
   startingInfo: Record<Seasons, Array<StartingInfoEntry>> = { [Seasons.Spring]: [], [Seasons.Summer]: [], [Seasons.Autumn]: [], [Seasons.Winter]: []}
+  research: Record<Research, ResearchData | undefined> = { [Research.A]: undefined, [Research.B]: undefined, [Research.C]: undefined, [Research.D]: undefined, [Research.E]: undefined, [Research.F]: undefined }
+  conferences: Record<Conference, ResearchData | undefined> = { [Conference.X1]: undefined,  [Conference.X2]: undefined}
 
   valid(): boolean {
     return this.gameCode.length > 0;
@@ -176,7 +228,15 @@ class GameInstance {
     return true;
   }
 
-  parseGameData(gameData: any): boolean {
+  checkSkyObject(object: any): boolean {
+    if (!(object in SkyObject)) {
+      console.log(`Parsing failure: Unknown sky object ${object}`);
+      return false;
+    }
+    return true;
+  }
+
+  parseSkyObjects(gameData: any) : boolean {
     if (!('obj' in gameData)) {
       console.log(`Parsing failure: 'obj' not found in game data ${Object.keys(gameData)}`);
       return false;
@@ -187,13 +247,15 @@ class GameInstance {
     for (let position in objData) {
       const object = objData[position];
       const index = parseInt(position)-1;
-      if (!(object in SkyObject)) {
-        console.log(`Parsing failure: Unknown sky object ${object}`);
+      if (!this.checkSkyObject(object)) {
         return false;
       }
       this.skyObjects[index] = object;
     }
+    return true;
+  }
 
+  parseStartingInfo(gameData: any): boolean {
     if (!('info' in gameData)) {
       console.log(`Parsing failure: 'info' not found in game data ${Object.keys(gameData)}`);
       return false;
@@ -219,8 +281,7 @@ class GameInstance {
             const sectorIndex = parseInt(sectorNumber) - 1;
             const object = infoEntry[sectorNumber];
 
-            if (!(object in SkyObject)) {
-              console.log(`Parsing failure: Unknown sky object ${object}`);
+            if (!this.checkSkyObject(object)) {
               return false;
             }
 
@@ -236,13 +297,136 @@ class GameInstance {
     return true;
   }
 
+  parseConferenceObject(conferenceObject: any): ResearchData | undefined {
+    if (!('title' in conferenceObject)) {
+      console.log(`Parsing failure: 'title' not found in conference game data ${Object.keys(conferenceObject)}`);
+      return undefined;
+    }
+
+    const titleArray = conferenceObject['title'];
+    const objects: SkyObject[] = []
+    for (let skyObjectNumber of titleArray) {
+      if (!this.checkSkyObject(skyObjectNumber)) {
+        return undefined;
+      }
+
+      objects.push(skyObjectNumber);
+    }
+
+    const bodyObject = conferenceObject['body'];
+    if (!('X' in bodyObject)) {
+      console.log(`Parsing failure: 'X' key not found in conf body game data ${Object.keys(bodyObject)}`);
+      return undefined;
+    }
+
+    const XObject = bodyObject['X'];
+    if (!this.checkSkyObject(XObject)) {
+      return undefined;
+    }
+
+    let YObject = undefined;
+    if ('Y' in bodyObject) {
+      if (bodyObject['Y'] !== XObject) {
+        YObject = bodyObject['Y'];
+        if (!this.checkSkyObject(YObject)) {
+          return undefined;
+        }
+      }
+    }
+
+    let NCount = undefined;
+    if ('N' in bodyObject) {
+      NCount = bodyObject['N'];
+    }
+
+    if (!('type' in bodyObject)) {
+      console.log(`Parsing failure: 'type' key not found in conf body game data ${Object.keys(bodyObject)}`);
+      return undefined;
+    }
+
+    const researchRuleString = bodyObject['type'];
+    const researchRule = reverseResearchRule(researchRuleString);
+    if (!researchRule) {
+      console.log(`Parsing failure: Unknown research rule ${researchRuleString} in conf body game data`);
+      return undefined;
+    }
+
+    const researchData: ResearchData = {
+      objects: objects, objectX: XObject, rule: researchRule
+    }
+    if (YObject) {
+      researchData.objectY = YObject;
+    }
+    if (NCount) {
+      researchData.countN = NCount;
+    }
+    return researchData;
+  }
+
+  parseResearchAndConferences(gameData: any): boolean {
+    if (!('conf' in gameData)) {
+      console.log(`Parsing failure: 'conf' not found in game data ${Object.keys(gameData)}`);
+      return false;
+    }
+
+    const confData = gameData['conf'];
+
+    for (let researchKey in Research) {
+      const research = Research[researchKey as keyof typeof Research];
+
+      if (!(research in confData)) {
+        console.log(`Parsing failure: Research '${research}' not found in conf game data ${Object.keys(confData)}`);
+        return false;
+      }
+
+      const conferenceObject = confData[research];
+
+      const researchData = this.parseConferenceObject(conferenceObject);
+      if (!researchData) {
+        return false;
+      }
+      this.research[research] = researchData;
+    }
+
+    if (!(Conference.X1 in confData)) {
+      console.log(`Parsing failure: 'X1' not found in conf game data ${Object.keys(confData)}`);
+      return false;
+    }
+
+    const X1ConferenceObject = confData[Conference.X1];
+    const researchData = this.parseConferenceObject(X1ConferenceObject);
+    this.conferences[Conference.X1] = researchData;
+
+    if (Conference.X2 in confData) {
+      const X2ConferenceObject = confData[Conference.X2];
+      const researchData = this.parseConferenceObject(X2ConferenceObject);
+      this.conferences[Conference.X2] = researchData;
+    }
+
+    return true;
+  }
+
+  parseGameData(gameData: any): boolean {
+    if (!this.parseSkyObjects(gameData)) {
+      return false;
+    }
+
+    if (!this.parseStartingInfo(gameData)) {
+      return false;
+    }
+
+    if (!this.parseResearchAndConferences(gameData)) {
+      return false;
+    }
+
+    return true;
+  }
+
   giveStartingInfo(season: Seasons, count: number): Array<StartingInfoEntry> {
     const entries = this.startingInfo[season];
     const clampedCount = Math.max(Math.min(count, entries.length), 0);
     return entries.slice(0, clampedCount);
   }
-
-
 }
 
 const Game = new GameInstance()

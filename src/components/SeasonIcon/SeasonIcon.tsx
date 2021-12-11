@@ -1,15 +1,15 @@
 import { SeasonImages, SeasonNames, Seasons } from "../../game/Game";
-import Icon from "../Icon/Icon";
+import Icon, { IconStyle } from "../Icon/Icon";
 
 interface SeasonProps {
   season: Seasons,
-  inline?: boolean
+  iconStyle?: IconStyle,
 }
 
 function SeasonIcon(props: SeasonProps) {
-  const { season, inline } = props;
+  const { season, iconStyle } = props;
   return (
-    <Icon inline={inline} src={SeasonImages[season]}  alt={SeasonNames[season]} />
+    <Icon iconStyle={iconStyle} src={SeasonImages[season]}  alt={SeasonNames[season]} />
   );
 }
 

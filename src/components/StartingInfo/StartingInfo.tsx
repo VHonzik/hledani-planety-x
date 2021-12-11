@@ -1,6 +1,6 @@
 import { SkyObjectNamesAccusative, StartingInfoEntry } from "../../game/Game";
 import SkyObjectIcon from "../SkyObjectIcon/SkyObjectIcon";
-import classes from "./StartingInfo.module.css"
+import Table from "../Table/Table";
 
 function StartingInfo(props: {entries: StartingInfoEntry[]}) {
   const { entries } = props;
@@ -17,19 +17,17 @@ function StartingInfo(props: {entries: StartingInfoEntry[]}) {
     elements.push((
       <tr key={key}>
         <td>Sektor {entry.sector+1}</td>
-        <td><SkyObjectIcon inline object={entry.object} /></td>
+        <td><SkyObjectIcon iconStyle='inline' object={entry.object} /></td>
         <td>neobsahuje {SkyObjectNamesAccusative[entry.object]}</td>
       </tr>
     ))
   }
 
   return (
-    <div className={classes.centerHorizontally}>
-      <table className={classes.factsTable}>
-        {elements}
-      </table>
-    </div>
-  )
+    <Table innerDividers firstColumnHeader thickRows>
+      {elements}
+    </Table>
+  );
 }
 
 export default StartingInfo;

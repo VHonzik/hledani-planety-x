@@ -24,6 +24,7 @@ function StartingInformation(props: {season: Seasons, gameId: string}) {
   startingInfo.sort((entryA, entryB) => entryA.sector - entryB.sector);
 
   const nextPlayerLink = `/hra/${gameId}/vyberHrace`
+  const researchConferencesLink = `/hra/${gameId}/vyzkumKonference`;
 
   return (
     <Content>
@@ -35,9 +36,12 @@ function StartingInformation(props: {season: Seasons, gameId: string}) {
           Přidat dalšího hráče
         </Button>
       </Link>
-      <Button fullWidth>
-          Pokračovat
-      </Button>
+      <Link to={researchConferencesLink}>
+        <Button fullWidth>
+            Pokračovat
+        </Button>
+      </Link>
+
     </Content>
   );
 }

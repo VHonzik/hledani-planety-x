@@ -3,30 +3,42 @@
   justify-content: center;
 }
 
-.factsTable {
+.table {
   text-align: left;
   border-collapse: collapse;
   margin-bottom: 2em;
 }
 
-.factsTable > tr {
+.table > tr {
+  height: 1.5em;
+}
+
+.thickRows > tr {
   height: 3em;
 }
 
-.factsTable > tr > td:nth-child(1) {
+.table > tr > th {
+  font-weight: bold;
+}
+
+.table > tr > td:nth-child(1) {
+  min-width: 3em;
+}
+
+.firstColumnHeader > tr > td:nth-child(1) {
   font-weight: bold;
   min-width: 6em;
 }
 
-.factsTable td, .factsTable th {
+.innerDividers td, .innerDividers th {
   border-top: 1px solid black;
   border-bottom: 1px solid black;
 }
 
-.factsTable tr:first-child td {
+.innerDividers tr:first-child td {
   border-top: 0;
 }
 
-.factsTable tr:last-child td {
+.innerDividers tr:last-child td {
   border-bottom: 0;
 }

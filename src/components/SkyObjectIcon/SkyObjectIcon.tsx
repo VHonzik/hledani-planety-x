@@ -1,15 +1,15 @@
 import { SkyObject, SkyObjectImages, SkyObjectNamesNominative } from "../../game/Game";
-import Icon from "../Icon/Icon";
+import Icon, { IconStyle } from "../Icon/Icon";
 
 interface SkyObjectProps {
   object: SkyObject,
-  inline?: boolean
+  iconStyle?: IconStyle,
 }
 
 function SkyObjectIcon(props: SkyObjectProps) {
-  const { object, inline } = props;
+  const { object, iconStyle } = props;
   return (
-    <Icon inline={inline} src={SkyObjectImages[object]}  alt={SkyObjectNamesNominative[object]} />
+    <Icon iconStyle={iconStyle} src={SkyObjectImages[object]}  alt={SkyObjectNamesNominative[object]} />
   );
 }
 

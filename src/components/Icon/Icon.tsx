@@ -1,21 +1,25 @@
 import classes from './Icon.module.css'
 
+export type IconStyle = 'tiny' | 'inline'
+
 export interface IconProps {
   src: string;
   alt: string;
-  inline?: boolean;
+  iconStyle?: IconStyle;
 }
 
 function Icon(props: IconProps) {
-  const {src, alt, inline} = props;
-  const styles = []
-  if (inline) {
-    styles.push(classes.inlineIcon);
+  const {src, alt, iconStyle} = props;
+  const classNames = []
+  if (iconStyle === 'inline') {
+    classNames.push(classes.inlineIcon);
+  } else if (iconStyle === 'tiny') {
+    classNames.push(classes.tinyIcon);
   } else {
-    styles.push(classes.fullIcon);
+    classNames.push(classes.fullIcon);
   }
   return (
-    <img src={src} alt={alt} className={styles.join(",")}/>
+    <img src={src} alt={alt} className={classNames.join(",")}/>
   );
 }
 
