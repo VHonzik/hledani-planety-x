@@ -2,19 +2,22 @@ import { Link, useParams } from "react-router-dom";
 import Button from "../components/Button/Button";
 import Content from "../components/Content/Content";
 import { useEffect, useState } from "react";
-import Game from "../game/Game";
+import Game, { GameMode, GameModeNames, reverseGameMode } from "../game/Game";
 import ErrorRedirect from "./ErrorRedirect";
+import LoadingGame from "./LoadingGame";
 
 function GameConfirm() {
   const params: {mode: string} = useParams();
   const { mode } = params;
+  const gameMode = reverseGameMode(mode);
 
   let [gameCode, setGameCode] = useState('');
   let [gameLoaded, setGameLoaded] = useState(false);
 
   useEffect(() => {
     let isMounted = true;
-    async function createGame(mode: 'standard' | 'expert') {
+
+    async function createGame(mode: GameMode) {
       const gameCode = await Game.create(mode);
       if (isMounted) {
         setGameCode(gameCode);
@@ -22,8 +25,8 @@ function GameConfirm() {
       }
     }
 
-    if (mode === 'standard' || mode === 'expert') {
-      createGame(mode);
+    if (gameMode) {
+      createGame(gameMode);
     } else {
       setGameLoaded(true);
     }
@@ -31,13 +34,19 @@ function GameConfirm() {
     return function cleanUp() {
       isMounted = false;
     }
-  }, [mode]);
+  }, [gameMode]);
+
+  if (!gameMode) {
+    return (
+      <ErrorRedirect>
+        <p>Obtížnost {mode} neznám. Jak si se sem dostal člověče?</p>
+      </ErrorRedirect>
+    );
+  }
 
   if (!gameLoaded) {
     return (
-      <Content>
-        <h1>Vydrž Prťka, Vydrž</h1>
-      </Content>
+      <LoadingGame />
     );
   }
 
@@ -49,8 +58,8 @@ function GameConfirm() {
         <h1>Kód hry</h1>
         <p>Pokud další hráči používají jiná zařízení, měli by zadat následující kód:</p>
         <h2>{gameCode}</h2>
-        <b>Standart (12 sektorů)</b>
-        <p>Ověřte, že všechny zarížení používají tento kód a začněte stisknutím tlačítka Pokračovat.</p>
+        <b>{GameModeNames[gameMode]}</b>
+        <p>Ověřte, že všechny zařízení používají tento kód a začněte stisknutím tlačítka Pokračovat.</p>
         <hr />
         <Link to={playerChooseLink}>
           <Button fullWidth>Pokračovat</Button>

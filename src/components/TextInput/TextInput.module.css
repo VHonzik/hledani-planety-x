@@ -1,0 +1,28 @@
+.fullWidth {
+  width: 100%;
+}
+
+.input {
+  text-align: center;
+  min-height: 3em;
+  text-transform: uppercase;
+  border: 1px solid black;
+  transition: border 300ms;
+}
+
+.input::placeholder {
+  text-transform: none;
+}
+
+.flashEnter {
+  border-color: red;
+}
+
+.root {
+  margin-bottom: 2em;
+  text-align: center;
+}
+
+.error {
+  color: red;
+}

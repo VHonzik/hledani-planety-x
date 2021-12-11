@@ -12,7 +12,7 @@ function NewGameDifficulty() {
         <Button fullWidth>Standart</Button>
       </Link>
       <Link to={expertLink}>
-        <Button fullWidth disabled>Expert</Button>
+        <Button fullWidth>Expert</Button>
       </Link>
     </Content>
   );

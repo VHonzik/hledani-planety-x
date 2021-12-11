@@ -1,7 +1,29 @@
 import mapsJson from "./maps.json"
 
-const standardMapsKey = '12B'
-const expertMapsKey = '18A'
+export enum GameMode {
+  Standard = 'standard',
+  Expert = 'expert'
+}
+
+const GameModeKeys: Record<GameMode, '12B' | '18A'> = {
+  [GameMode.Standard]: '12B',
+  [GameMode.Expert]: '18A',
+}
+
+export const GameModeNames: Record<GameMode, string> = {
+  [GameMode.Standard]: 'Standard (12 sektorů)',
+  [GameMode.Expert]: 'Expert (18 sektorů)',
+}
+
+export function reverseGameMode(gameModeValueString: string): GameMode | undefined {
+  for (let seasonKey in GameMode) {
+    const gameMode = GameMode[seasonKey as keyof typeof GameMode];
+    if (gameMode === gameModeValueString) {
+      return gameMode;
+    }
+  }
+  return undefined;
+}
 
 export enum SkyObject {
   Asteroid = 1,
@@ -95,8 +117,29 @@ class GameInstance {
     return this.valid() && code === this.gameCode;
   }
 
-  async create(mode: 'standard' | 'expert') {
-    const key = mode === 'standard' ? standardMapsKey : expertMapsKey;
+  findGameCode(gameCode: string): {found: boolean, gameMode: GameMode} {
+    for (let gameModeString in GameMode) {
+      const gameMode = GameMode[gameModeString as keyof typeof GameMode];
+      const key = GameModeKeys[gameMode];
+      const modeGameCodes = mapsJson[key];
+      for (let code of modeGameCodes) {
+        if (code === gameCode) {
+          return {
+            found: true,
+            gameMode: gameMode
+          }
+        }
+      }
+    }
+
+    return {
+      found: false,
+      gameMode: GameMode.Standard
+    }
+  }
+
+  async create(mode: GameMode) {
+    const key = GameModeKeys[mode];
     const maps = mapsJson[key];
     // TODO Store already played maps in a browser storage and exclude them here
     this.gameCode = maps[Math.floor(Math.random() * maps.length)];
@@ -198,6 +241,8 @@ class GameInstance {
     const clampedCount = Math.max(Math.min(count, entries.length), 0);
     return entries.slice(0, clampedCount);
   }
+
+
 }
 
 const Game = new GameInstance()

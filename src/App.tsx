@@ -7,6 +7,7 @@ import GameConfirm from './pages/GameConfirm';
 import GameChoosePlayer from './pages/GameChoosePlayer';
 import GameChooseDifficulty from './pages/GameChooseDifficulty';
 import StartingInformation from './pages/StartingInformation';
+import ExistingGame from './pages/ExistingGame';
 
 function App() {
   return (
@@ -16,6 +17,9 @@ function App() {
       </Route>
       <Route path='/novahra' exact>
         <NewGame />
+      </Route>
+      <Route path='/pripojitkehre/vlozitkod' exact>
+        <ExistingGame />
       </Route>
       <Route path='/novahra/obtiznost' exact>
         <NewGameDifficulty />

@@ -6,6 +6,12 @@ function StartingInfo(props: {entries: StartingInfoEntry[]}) {
   const { entries } = props;
   const elements = [];
 
+  if (entries.length === 0) {
+    return (
+      <p>Jsi génius, ty nepotřebuješ žádný fakta.</p>
+    );
+  }
+
   for (let entry of entries) {
     const key = `${entry.sector}-${entry.object}`;
     elements.push((

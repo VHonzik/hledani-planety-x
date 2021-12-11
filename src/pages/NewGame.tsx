@@ -9,7 +9,9 @@ function NewGame() {
       <Link to='/novahra/obtiznost'>
         <Button fullWidth>Založit novou hru</Button>
       </Link>
-      <Button fullWidth disabled>Vložit kód hry</Button>
+      <Link to='/pripojitkehre/vlozitkod'>
+        <Button fullWidth>Vložit kód hry</Button>
+      </Link>
     </Content>
   );
 }
