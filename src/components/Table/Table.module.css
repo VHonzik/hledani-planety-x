@@ -6,26 +6,25 @@
 .table {
   text-align: left;
   border-collapse: collapse;
-  margin-bottom: 2em;
 }
 
-.table > tr {
+.table tr {
   height: 1.5em;
 }
 
-.thickRows > tr {
+.thickRows tr {
   height: 3em;
 }
 
-.table > tr > th {
+.table tr > th {
   font-weight: bold;
 }
 
-.table > tr > td:nth-child(1) {
+.table tr > td:nth-child(1) {
   min-width: 3em;
 }
 
-.firstColumnHeader > tr > td:nth-child(1) {
+.firstColumnHeader tr > td:nth-child(1) {
   font-weight: bold;
   min-width: 6em;
 }

@@ -10,6 +10,9 @@ import StartingInformation from './pages/StartingInformation';
 import ExistingGame from './pages/ExistingGame';
 import ResearchConferences from './pages/ResearchConferences';
 import GameMenu from './pages/GameMenu';
+import GameEndConfirmation from './pages/GameEndConfirmation';
+import GameEnd from './pages/GameEnd';
+import TargetPickReminder from './pages/TargetPickReminder';
 
 function App() {
   return (
@@ -43,6 +46,15 @@ function App() {
       </Route>
       <Route path='/hra/:gameId/herniMenu' exact>
         <GameMenu />
+      </Route>
+      <Route path='/hra/:gameId/konecPotvrzeni' exact>
+        <GameEndConfirmation />
+      </Route>
+      <Route path='/hra/:gameId/zacilitUpozorneni' exact>
+        <TargetPickReminder />
+      </Route>
+      <Route path='/hra/:gameId/konec' exact>
+        <GameEnd />
       </Route>
       <Route path='*'>
         <NotFound />

@@ -20,7 +20,7 @@ function ResearchConferences(props: {gameId: string}) {
       if (researchData.objects.length > 1) {
         text += ' a ' + SkyObjectNamesPluralNominative[researchData.objects[1]]
       }
-      researchRows.push(<tr><td>{researchName}</td><td>{text}</td></tr>);
+      researchRows.push(<tr key={researchName}><td>{researchName}</td><td>{text}</td></tr>);
     }
   }
 
@@ -33,22 +33,25 @@ function ResearchConferences(props: {gameId: string}) {
       if (researchData.objects.length > 1) {
         text += ' a ' + SkyObjectNamesPluralNominative[researchData.objects[1]]
       }
-      conferencesRows.push(<tr><td>{conferenceName}</td><td>{text}</td></tr>);
+      conferencesRows.push(<tr key={conferenceName}><td>{conferenceName}</td><td>{text}</td></tr>);
     }
   }
 
-  const continueLink = `/hra/${gameId}/herniMenu`
+  const continueLink = `/hra/${gameId}/herniMenu`;
   return (
     <Content>
       <h1>Výzkum a Konference</h1>
       <p>V této hře jsou dostupné následující výzkumná témata a konference. Doporučujeme si je napsat na papír.</p>
-      <Divider />
+      <Divider margin />
       <Table>
-        <tr><th colSpan={2}>Výzkum</th></tr>
-        {researchRows}
-        <tr><th colSpan={2}>Konference</th></tr>
-        {conferencesRows}
+        <tbody>
+          <tr><th colSpan={2}>Výzkum</th></tr>
+          {researchRows}
+          <tr><th colSpan={2}>Konference</th></tr>
+          {conferencesRows}
+        </tbody>
       </Table>
+      <Divider margin />
       <Link to={continueLink}>
         <Button fullWidth>Pokračovat</Button>
       </Link>

@@ -20,12 +20,14 @@ function StartingInfo(props: {entries: StartingInfoEntry[]}) {
         <td><SkyObjectIcon iconStyle='inline' object={entry.object} /></td>
         <td>neobsahuje {SkyObjectNamesAccusative[entry.object]}</td>
       </tr>
-    ))
+    ));
   }
 
   return (
     <Table innerDividers firstColumnHeader thickRows>
-      {elements}
+      <tbody>
+        {elements}
+      </tbody>
     </Table>
   );
 }

@@ -1,6 +1,7 @@
 import { Link, useParams } from "react-router-dom";
 import Button from "../components/Button/Button";
 import Content from "../components/Content/Content";
+import Divider from "../components/Divider/Divider";
 import StartingInfo from "../components/StartingInfo/StartingInfo";
 import Game, { SeasonNames, Seasons } from "../game/Game";
 import pageWithGame from "../hoc/PageWithGame/PageWithGame";
@@ -31,6 +32,7 @@ function StartingInformation(props: {season: Seasons, gameId: string}) {
       <h1>Začáteční fakta</h1>
       <h2>{SeasonNames[season]}</h2>
       <StartingInfo entries={startingInfo} />
+      <Divider margin />
       <Link to={nextPlayerLink}>
         <Button fullWidth>
           Přidat dalšího hráče

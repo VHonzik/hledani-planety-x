@@ -1,0 +1,16 @@
+.helpImageContainer {
+  width: 100%;
+  margin-bottom: 2em;
+}
+
+.helpImage {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
+
+.caption {
+  margin-top: 0em;
+  margin-bottom: 0em;
+}

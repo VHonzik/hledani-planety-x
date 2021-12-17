@@ -14,7 +14,7 @@ function GameMenu(props: {gameId: string}) {
       <Link to={link+'pruzkum'}>
         <Button fullWidth>Průzkum (3-4 <ClockIcon />)</Button>
       </Link>
-      <Link to={link+'zamirit'}>
+      <Link to={link+'zacilitUpozorneni'}>
         <Button fullWidth>Zacílit (4 <ClockIcon />)</Button>
       </Link>
       <Link to={link+'vyzkum'}>
@@ -31,7 +31,7 @@ function GameMenu(props: {gameId: string}) {
         <Button fullWidth>Planeta X Konference</Button>
       </Link>
       <Divider margin />
-      <Link to={link+'end'}>
+      <Link to={link+'konecPotvrzeni'}>
         <Button fullWidth>Ukončit hru a Odhalit objekty</Button>
       </Link>
     </Content>

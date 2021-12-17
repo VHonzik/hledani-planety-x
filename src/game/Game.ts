@@ -15,6 +15,11 @@ export const GameModeNames: Record<GameMode, string> = {
   [GameMode.Expert]: 'Expert (18 sektorů)',
 }
 
+const GameModeVisibleSkyHelpImage: Record<GameMode, string> = {
+  [GameMode.Standard]: "/help-visible-6.gif",
+  [GameMode.Expert]: "/help-visible-9.gif",
+}
+
 export function reverseGameMode(gameModeValueString: string): GameMode | undefined {
   for (let seasonKey in GameMode) {
     const gameMode = GameMode[seasonKey as keyof typeof GameMode];
@@ -48,7 +53,7 @@ export const SkyObjectNamesNominative: Record<SkyObject, string> = {
   [SkyObject.DwarfPlanet]: "Trpasličí planeta",
   [SkyObject.Comet]: "Kometa",
   [SkyObject.GasCloud]: "Plynové mračno",
-  [SkyObject.TrulyEmpty]: "Prázný Sektor",
+  [SkyObject.TrulyEmpty]: "Prázdný sektor",
   [SkyObject.PlanetX]: "Planeta X",
 }
 
@@ -57,7 +62,7 @@ export const SkyObjectNamesAccusative: Record<SkyObject, string> = {
   [SkyObject.DwarfPlanet]: "Trpasličí planetu",
   [SkyObject.Comet]: "Kometu",
   [SkyObject.GasCloud]: "Plynové mračno",
-  [SkyObject.TrulyEmpty]: "Prázný Sektor",
+  [SkyObject.TrulyEmpty]: "Prázdný sektor",
   [SkyObject.PlanetX]: "Planetu X",
 }
 
@@ -66,7 +71,7 @@ export const SkyObjectNamesPluralNominative: Record<SkyObject, string> = {
   [SkyObject.DwarfPlanet]: "Trpasličí planety",
   [SkyObject.Comet]: "Komety",
   [SkyObject.GasCloud]: "Plynové mračna",
-  [SkyObject.TrulyEmpty]: "Prázné Sektory",
+  [SkyObject.TrulyEmpty]: "Prázdné sektory",
   [SkyObject.PlanetX]: "Planeta X",
 }
 
@@ -160,6 +165,7 @@ class GameInstance {
   startingInfo: Record<Seasons, Array<StartingInfoEntry>> = { [Seasons.Spring]: [], [Seasons.Summer]: [], [Seasons.Autumn]: [], [Seasons.Winter]: []}
   research: Record<Research, ResearchData | undefined> = { [Research.A]: undefined, [Research.B]: undefined, [Research.C]: undefined, [Research.D]: undefined, [Research.E]: undefined, [Research.F]: undefined }
   conferences: Record<Conference, ResearchData | undefined> = { [Conference.X1]: undefined,  [Conference.X2]: undefined}
+  mode: GameMode = GameMode.Standard
 
   valid(): boolean {
     return this.gameCode.length > 0;
@@ -203,9 +209,17 @@ class GameInstance {
   }
 
   async load(gameCode: string): Promise<boolean> {
+    const {found, gameMode} = this.findGameCode(gameCode);
+    if (!found) {
+      console.log(`Failed to find ${gameCode} game in maps list.`);
+      return false;
+    }
     console.log(`Fetching ${gameCode} game data`);
     this.gameCode = '';
+    this.mode = gameMode;
     this.startingInfo = {[Seasons.Spring]: [], [Seasons.Summer]: [], [Seasons.Autumn]: [], [Seasons.Winter]: []};
+    this.research = { [Research.A]: undefined, [Research.B]: undefined, [Research.C]: undefined, [Research.D]: undefined, [Research.E]: undefined, [Research.F]: undefined }
+    this.conferences = { [Conference.X1]: undefined,  [Conference.X2]: undefined}
     let gameData: any;
     try {
       const response = await fetch('/g3x6.json');
@@ -426,6 +440,14 @@ class GameInstance {
     const entries = this.startingInfo[season];
     const clampedCount = Math.max(Math.min(count, entries.length), 0);
     return entries.slice(0, clampedCount);
+  }
+
+  getVisibleSkySize(): number {
+    return Math.floor(this.skyObjects.length / 2);
+  }
+
+  getVisibleSkyHelpImage(): string {
+    return GameModeVisibleSkyHelpImage[this.mode];
   }
 }
 
