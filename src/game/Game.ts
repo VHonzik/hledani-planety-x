@@ -449,6 +449,22 @@ class GameInstance {
   getVisibleSkyHelpImage(): string {
     return GameModeVisibleSkyHelpImage[this.mode];
   }
+
+  skyObjectSanitizeReveal(skyObject: SkyObject): SkyObject {
+    if (skyObject === SkyObject.PlanetX) {
+      return SkyObject.TrulyEmpty;
+    }
+    return skyObject;
+  }
+
+  validSector(sector: number) {
+    return !isNaN(sector) && sector >= 0 && sector < this.skyObjects.length;
+  }
+
+  targetSector(sector: number): SkyObject {
+    return this.skyObjectSanitizeReveal(this.skyObjects[sector]);
+  }
+
 }
 
 const Game = new GameInstance()

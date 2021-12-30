@@ -1,8 +1,8 @@
-import Icon from "../Icon/Icon";
+import Icon, { IconStyle } from "../Icon/Icon";
 
-function ClockIcon() {
+function ClockIcon(props: {iconStyle?: IconStyle}) {
   return (
-    <Icon iconStyle='tiny' src='/clock.png' alt='Tahů' />
+    <Icon iconStyle={props.iconStyle || 'tiny'} src='/clock.png' alt='Tahů' />
   );
 }
 

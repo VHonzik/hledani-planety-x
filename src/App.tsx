@@ -13,6 +13,8 @@ import GameMenu from './pages/GameMenu';
 import GameEndConfirmation from './pages/GameEndConfirmation';
 import GameEnd from './pages/GameEnd';
 import TargetPickReminder from './pages/TargetPickReminder';
+import TargetPick from './pages/TargetPick';
+import TargetPickResult from './pages/TargetPickResult';
 
 function App() {
   return (
@@ -52,6 +54,12 @@ function App() {
       </Route>
       <Route path='/hra/:gameId/zacilitUpozorneni' exact>
         <TargetPickReminder />
+      </Route>
+      <Route path='/hra/:gameId/zacilit' exact>
+        <TargetPick />
+      </Route>
+      <Route path='/hra/:gameId/zacilit/:sector' exact>
+        <TargetPickResult />
       </Route>
       <Route path='/hra/:gameId/konec' exact>
         <GameEnd />

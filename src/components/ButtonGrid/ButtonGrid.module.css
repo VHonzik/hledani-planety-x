@@ -1,0 +1,29 @@
+.gridRoot {
+  width: 400px;
+  background-color: white;
+  position: absolute;
+  top: 0;
+  left: 0;
+  border: 1px solid black;
+}
+
+.gridTitle {
+  text-transform: capitalize;
+  font-weight: bold;
+  border-bottom: 1px dashed grey;
+  height: 2em;
+  justify-content: left;
+  align-items: center;
+  padding-left: 2em;
+  display: flex;
+}
+
+.gridWrapper {
+  position: relative;
+  display: inline;
+}
+
+.gridRoot > button {
+  float: left;
+  padding: 2em;
+}
