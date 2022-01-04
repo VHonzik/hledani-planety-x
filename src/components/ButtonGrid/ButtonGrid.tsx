@@ -3,8 +3,9 @@ import classes from './ButtonGrid.module.css'
 interface ButtonGridProps {
   title: string,
   columns: number,
+  values: string[],
   shown: boolean,
-  onPick?: (value: number) => void
+  onPick?: (index: number, value: string) => void
 }
 
 interface ButtonGridWrapperProps extends ButtonGridProps {
@@ -12,19 +13,20 @@ interface ButtonGridWrapperProps extends ButtonGridProps {
 }
 
 function ButtonGrid(props: ButtonGridProps) {
-  const { title, columns, shown, onPick } = props;
+  const { title, columns, shown, onPick, values } = props;
   const buttonWidth = `${100/columns}%`;
   const buttons = [];
 
-  function buttonClicked(index: number) {
+  function buttonClicked(index: number, value: string) {
     if (onPick) {
-      onPick(index);
+      onPick(index, value);
     }
   }
 
-  for (let i = 0; i < 18; i++) {
+  for (let i = 0; i < values.length; i++) {
+    const value = values[i];
     buttons.push(
-      <button key={`gridButton${i}`} style={{width: buttonWidth}} onClick={() => {buttonClicked(i)}}>{i+1}</button>
+      <button key={`gridButton${i}`} style={{width: buttonWidth}} onClick={() => {buttonClicked(i, value)}}>{value}</button>
     )
   }
   return (

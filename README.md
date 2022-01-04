@@ -4,5 +4,11 @@ This repo contains source code for unofficial Czech version of companion web-app
 
 ~~You can find the companion web-app live [here](https://hledani-planety-x.herokuapp.com/)~~ (WIP)
 
+## Development
+
+The project is using [create-react-app](https://reactjs.org/docs/create-a-new-react-app.html).
+
+Note that all the games are stored as JSON files, where the file name is the game code. Due to the nature of git and also size concerns, I have chosen to compress them into `public\maps.7z` instead of committing them individually to this repo. You will need to extract them in place before you can run the server locally. The expected file structure is `public\maps\*.json`.
+
 
 

@@ -136,9 +136,18 @@ enum ResearchRules {
   OneOrMoreXAdjacentY = 'confClue1PlusXAdjacentY',
   NoXOppositeY = 'confClueNoXOppositeY',
   NoXWithin1Y = 'confClueNoXWithin1Y',
+  AllXWithinN = 'confClueAllXWithinN',
   AllXWithinNY = 'confClueAllXWithinNY',
   NoXWithinNY = 'confClueNoXWithinNY',
   PlanetXNotOppositeY = 'confClue9NotOppositeY',
+  AllXWithin1Y = 'confClueAllXWithin1Y',
+  PlanetXNotWithinNY = 'confClue9NotWithinNY',
+  NXConsecutive = 'confClueNXConsecutive',
+  PlanetXNotWithin1Y = 'confClue9NotWithin1Y',
+  OneOrMoreXOppositeY = 'confClue1PlusXOppositeY',
+  PlanetXWithinNY = 'confClue9WithinNY',
+  AllXOppositeY = 'confClueAllXOppositeY',
+  AllXConsecutive = 'confClueAllXConsecutive',
 }
 
 export function reverseResearchRule(researchRuleValueString: string): ResearchRules | undefined {
@@ -222,20 +231,19 @@ class GameInstance {
     this.conferences = { [Conference.X1]: undefined,  [Conference.X2]: undefined}
     let gameData: any;
     try {
-      const response = await fetch('/g3x6.json');
+      const response = await fetch(`/maps/${gameCode}.json`);
       if (!response.ok) {
-        console.log('Fetching g3x6.json game data failed due to network error');
+        console.log(`Fetching ${gameCode}.json game data failed due to network error`);
         return false;
       }
-
       gameData = await response.json();
     } catch(e) {
-      console.log(`Fetching g3x6.json game data failed - ${e}`);
+      console.log(`Fetching ${gameCode} game data failed - ${e}`);
       return false;
     }
 
     if (!this.parseGameData(gameData)) {
-      console.log(`Failed to parse g3x6.json game data`);
+      console.log(`Failed to parse ${gameCode} game data`);
       return false;
     }
     this.gameCode = gameCode;
@@ -340,7 +348,7 @@ class GameInstance {
 
     let YObject = undefined;
     if ('Y' in bodyObject) {
-      if (bodyObject['Y'] !== XObject) {
+      if (bodyObject['Y'] !== XObject && bodyObject['Y'] !== null) {
         YObject = bodyObject['Y'];
         if (!this.checkSkyObject(YObject)) {
           return undefined;
@@ -463,6 +471,10 @@ class GameInstance {
 
   targetSector(sector: number): SkyObject {
     return this.skyObjectSanitizeReveal(this.skyObjects[sector]);
+  }
+
+  getSectors(): number {
+    return this.skyObjects.length;
   }
 
 }

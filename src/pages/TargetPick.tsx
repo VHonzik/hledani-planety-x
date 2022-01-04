@@ -5,6 +5,7 @@ import { ButtonGridWrapper } from "../components/ButtonGrid/ButtonGrid";
 import ClockIcon from "../components/ClockIcon/ClockIcon";
 import Content from "../components/Content/Content";
 import Divider from "../components/Divider/Divider";
+import Game from "../game/Game";
 import pageWithGame from "../hoc/PageWithGame/PageWithGame";
 
 function TargetPick(props: {gameId: string}) {
@@ -17,8 +18,8 @@ function TargetPick(props: {gameId: string}) {
     setSectorPickShown(!sectorPickShown);
   }
 
-  function sectorPicked(value: number) {
-    setPickedSector(value);
+  function sectorPicked(index: number, value: string) {
+    setPickedSector(index);
     setSectorPickShown(false);
   }
 
@@ -27,12 +28,18 @@ function TargetPick(props: {gameId: string}) {
     continueLink = `/hra/${gameId}/zacilit/${pickedSector+1}`;
   }
 
+  const backLink = `/hra/${gameId}/herniMenu`;
+
+  const sectors = Game.getSectors();
+  const columns = Math.floor(sectors / 3);
+  const values = Array.from({length: sectors}, (_, key) => (key + 1).toString())
+
   return (
     <Content>
       <h1>Akce: Zacílit</h1>
       <div style={{marginBottom: '2em'}}>
         <span style={{marginRight: '1em'}}>Sektor:</span>
-        <ButtonGridWrapper columns={6} title="Vyber sektor" shown={sectorPickShown} onPick={sectorPicked}>
+        <ButtonGridWrapper columns={columns} values={values} title="Vyber sektor" shown={sectorPickShown} onPick={sectorPicked}>
           <Button onClick={selectSectorClicked}>{pickedSector !== undefined ? pickedSector.toString() : '(Vyber Sektor)'}</Button>
         </ButtonGridWrapper>
       </div>
@@ -40,7 +47,9 @@ function TargetPick(props: {gameId: string}) {
         <Button fullWidth disabled={pickedSector === undefined}>Zacílit (4 <ClockIcon />)</Button>
       </Link>
       <Divider margin />
-      <Button fullWidth>Zpět</Button>
+      <Link to={backLink}>
+        <Button fullWidth>Zpět</Button>
+      </Link>
     </Content>
   );
 }
